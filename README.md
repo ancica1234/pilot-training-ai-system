@@ -1,4 +1,4 @@
-# 🎖️ Navy Training Multi-Agent System
+# 🎖️ Training Multi-Agent System
 
 A multi-agent AI system for Navy flight training management built with LangGraph, Groq LLaMA 3.3, FastAPI, and Streamlit.
 
