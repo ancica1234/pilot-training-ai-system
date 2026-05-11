@@ -1,6 +1,6 @@
-# 🎖️ Training Multi-Agent System
+# ✈️ Aviation Training Multi-Agent System
 
-A multi-agent AI system for Navy flight training management built with LangGraph, Groq LLaMA 3.3, FastAPI, and Streamlit.
+A multi-agent AI system for aviation flight training management built with LangGraph, Groq LLaMA 3.3, FastAPI, and Streamlit.
 
 ## Architecture
 

@@ -1,7 +1,7 @@
 """
 api/main.py
 -----------
-FastAPI application for the Navy Training Multi-Agent System.
+FastAPI application for the Aviation Training Multi-Agent System.
 
 Run with:
     GROQ_API_KEY=<key> uvicorn api.main:app --reload
@@ -24,8 +24,8 @@ from api.models import (
 # ── App setup ──────────────────────────────────────────────────────────────────
 
 app = FastAPI(
-    title="Navy Training Multi-Agent API",
-    description="Multi-agent system for Navy flight training management",
+    title="Aviation Training Multi-Agent API",
+    description="Multi-agent system for aviation flight training management",
     version="1.0.0",
 )
 

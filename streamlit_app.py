@@ -5,7 +5,7 @@ from graph.graph import graph
 from data.mock_data import MOCK_STUDENT_HISTORY, MOCK_SCHEDULES
 from agents.instructor_notification import NOTIFICATION_LOG
 
-st.set_page_config(page_title="Navy Training Multi-Agent System", page_icon="🎖️", layout="wide")
+st.set_page_config(page_title="Aviation Training Multi-Agent System", page_icon="✈️", layout="wide")
 
 EXAMPLE_QUERIES = [
     "Evaluate John Smith's training progress and assess his risk level.",
@@ -83,7 +83,7 @@ def approve_notification(approved: bool):
     st.session_state.awaiting_approval = False
 
 # ── UI ─────────────────────────────────────────────────────────────────────────
-st.title("🎖️ Navy Training Multi-Agent System")
+st.title("✈️ Aviation Training Multi-Agent System")
 st.caption("LangGraph · Groq LLaMA 3.3 · FastAPI · LangSmith")
 
 tab1, tab2, tab3 = st.tabs(["🤖 Agent Query", "👨‍✈️ Students", "📋 Notifications"])

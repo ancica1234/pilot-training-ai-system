@@ -4,13 +4,13 @@ from data.mock_data import MOCK_STUDENT_HISTORY
 # Mock instructor registry
 MOCK_INSTRUCTORS = {
     '25-4': {
-        'name': 'Lt. Commander Williams',
-        'email': 'williams@navy.mil',
+        'name': 'Instructor Williams',
+        'email': 'williams@aviation-training.com',
         'phone': '555-0101'
     },
     '25-5': {
-        'name': 'Lt. Commander Chen',
-        'email': 'chen@navy.mil',
+        'name': 'Instructor Chen',
+        'email': 'chen@aviation-training.com',
         'phone': '555-0202'
     }
 }

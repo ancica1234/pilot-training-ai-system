@@ -1,6 +1,6 @@
 """
-Navy Training Multi-Agent System
----------------------------------
+Aviation Training Multi-Agent System
+--------------------------------------
 Entry point for running the supervisor graph interactively.
 
 Usage:
@@ -25,7 +25,7 @@ def _setup_tracing() -> None:
         os.environ["LANGCHAIN_TRACING_V2"] = "true"
         os.environ["LANGCHAIN_API_KEY"]     = api_key
         os.environ["LANGSMITH_API_KEY"]     = api_key
-        project = os.environ.get("LANGCHAIN_PROJECT", "navy-training-multi-agent")
+        project = os.environ.get("LANGCHAIN_PROJECT", "aviation-training-multi-agent")
         os.environ["LANGCHAIN_PROJECT"]     = project
         try:
             from langsmith import Client
@@ -130,7 +130,7 @@ if __name__ == "__main__":
         print("Usage: GROQ_API_KEY=<your-key> python3.11 main.py")
         raise SystemExit(1)
 
-    print("Navy Training Multi-Agent System")
+    print("Aviation Training Multi-Agent System")
     print("Available example queries:")
     for i, q in enumerate(EXAMPLE_QUERIES, 1):
         print(f"  {i}. {q}")

@@ -177,14 +177,14 @@ class TestNotificationTools:
     def test_get_instructor_for_known_class(self):
         from agents.instructor_notification import get_instructor_for_class
         result = get_instructor_for_class.invoke({"class_name": "25-4"})
-        assert "Lt. Commander Williams" in result
-        assert "williams@navy.mil" in result
+        assert "Instructor Williams" in result
+        assert "williams@aviation-training.com" in result
 
     def test_get_instructor_for_class_25_5(self):
         from agents.instructor_notification import get_instructor_for_class
         result = get_instructor_for_class.invoke({"class_name": "25-5"})
-        assert "Lt. Commander Chen" in result
-        assert "chen@navy.mil" in result
+        assert "Instructor Chen" in result
+        assert "chen@aviation-training.com" in result
 
     def test_get_instructor_for_unknown_class(self):
         from agents.instructor_notification import get_instructor_for_class

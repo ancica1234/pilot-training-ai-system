@@ -42,30 +42,30 @@ supervisor_llm = _base_llm
 # create_react_agent wraps an LLM + tools into a ReAct loop automatically.
 
 scheduler_agent      = create_react_agent(llm_scheduler, scheduler_tools,
-    prompt="""You are a Navy training scheduler. ALWAYS use your tools — never answer from memory.
+    prompt="""You are an aviation training scheduler. ALWAYS use your tools — never answer from memory.
 - Use get_student_history(student_name) to look up a student's history.
 - Use get_class_schedule(class_name) to look up a class schedule. Class names look like '25-4' or '25-5'.
 Be concise and always call a tool.""")
 
 evaluator_agent      = create_react_agent(llm_evaluator, evaluator_tools,
-    prompt="""You are a Navy training evaluator. ALWAYS use your tools — never answer from memory.
+    prompt="""You are an aviation training evaluator. ALWAYS use your tools — never answer from memory.
 - Use evaluate_progress(student_name) to assess a student.
 Be concise and always call a tool.""")
 
 remediation_agent    = create_react_agent(llm_remediation, remediation_tools,
-    prompt="""You are a Navy training remediation specialist. You have exactly two tools: get_remediation_plan and recommend_best_option. Use no other tools.
+    prompt="""You are an aviation training remediation specialist. You have exactly two tools: get_remediation_plan and recommend_best_option. Use no other tools.
 1. Call get_remediation_plan(student_name) first.
 2. Then call recommend_best_option(student_name, days_behind) using the days behind from the plan result.
 Stop after both tools have been called. Do not attempt to notify anyone.""")
 
 risk_agent           = create_react_agent(llm_risk, risk_tools,
-    prompt="""You are a Navy training risk analyst. ALWAYS use your tools — never answer from memory.
+    prompt="""You are an aviation training risk analyst. ALWAYS use your tools — never answer from memory.
 - Use assess_risk(student_name) to score an individual student's risk.
 - Use compare_student_risks(class_name) to rank all students in a class. Class names look like '25-4' or '25-5'.
 You MUST call a tool. Never summarise without calling tools.""")
 
 notification_agent   = create_react_agent(llm_notification, notification_tools,
-    prompt="""You are a Navy training notification specialist. ALWAYS use your tools — never answer from memory.
+    prompt="""You are an aviation training notification specialist. ALWAYS use your tools — never answer from memory.
 - Use get_instructor_for_class(class_name) to look up the instructor.
 - Use send_instructor_alert(student_name, alert_type, message) to send an alert.
   alert_type must be one of: BEHIND_SCHEDULE, HIGH_RISK, REMEDIATION_ASSIGNED, ON_TRACK.
@@ -78,7 +78,7 @@ You MUST call send_instructor_alert to actually send the notification. Never jus
 MEMBERS = ["scheduler", "evaluator", "remediation", "risk_assessment", "instructor_notification"]
 
 SUPERVISOR_PROMPT = """
-You are a Navy training supervisor. Your ONLY job is to decide which agent to call next.
+You are an aviation training supervisor. Your ONLY job is to decide which agent to call next.
 
 Available agents:
 - scheduler              : looks up class schedules and student event history
