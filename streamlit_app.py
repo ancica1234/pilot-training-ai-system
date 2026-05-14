@@ -110,7 +110,7 @@ def approve_notification(approved: bool):
 st.title("✈️ Aviation Training Multi-Agent System")
 st.caption("LangGraph · Groq LLaMA 3.3 · FastAPI · LangSmith")
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["🤖 Agent Query", "👷‍✈️ Students", "📋 Notifications", "✈️ Flight Schedule", "🎓 Ground School", "📋 IP Hotboard", "🚫 SNIVs"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["🤖 Agent Query", "👷‍✈️ Students", "📋 Notifications", "✈️ Flight Schedule", "🎓 Ground School", "📋 IP Hotboard", "🚫 SNIVs", "❓ Help"])
 
 with tab1:
     st.subheader("Ask the Multi-Agent System")
@@ -319,3 +319,211 @@ with tab7:
             flags_str = " | " + ", ".join(flags) if flags else ""
             st.write(f"{icon} {name} [{data.get('type','?')}]{flags_str}")
         st.write("")
+
+with tab8:
+    st.title("How to Use This System")
+    st.markdown("""
+    This system replaces multiple Excel spreadsheets and SharePoint trackers with a single
+    AI-powered interface for aviation flight training scheduling and student management.
+    """)
+
+    with st.expander("🤖  Agent Query — Ask the AI anything", expanded=True):
+        st.markdown("""
+        **What it does:**
+        Type a plain-English question and the system automatically routes it to the right
+        specialist agents, runs the tools, and returns a structured answer.
+
+        **How to use it:**
+        - Type your question in the text box and click **Run**, or click one of the pre-built example buttons
+        - The system will show which agents were called and what each one found
+        - If the query involves sending an instructor alert, you will be asked to **Approve or Reject** before anything is sent
+
+        **Example queries you can type:**
+        | Query | Agents used |
+        |---|---|
+        | `Show me the flight whiteboard for 2026-04-06` | Flight Scheduler |
+        | `Show me the IP hotboard for 2026-04-06` | IP Hotboard |
+        | `Show me all SNIVs and check for double schedule conflicts on 2026-04-06` | SNIV Tracker |
+        | `Show me the ground school schedule and CSI availability for 2026-04-07` | Ground School |
+        | `What is the aircraft status and enviro data for 2026-04-06?` | Flight Scheduler |
+        | `Evaluate Tara Voss training progress and assess her risk level` | Evaluator + Risk |
+        | `Build a remediation plan for Bram Okafor and notify his instructor` | Remediation + Notification |
+        | `Compare risk levels for all students in class 26-1` | Risk Assessment |
+
+        **Tip:** Always include a date in YYYY-MM-DD format for flight/schedule queries.
+        Available demo dates: 2026-04-06, 2026-04-07, 2026-04-08, 2026-04-13, 2026-04-20, 2026-04-27
+        """)
+
+    with st.expander("✈️  Flight Schedule Tab"):
+        st.markdown("""
+        **What it shows:**
+        The daily operational picture — equivalent to the Weekly spreadsheet whiteboard.
+
+        **How to use it:**
+        1. Select a date from the dropdown
+        2. The **Environmental Data bar** shows: Sunset time, EENT (End of Evening Nautical Twilight),
+           HLL (High Light Level), Highlight Window, and Flight Window for that day
+        3. The **Daily Status Board** shows every person colour-coded by their status:
+
+        | Row | Meaning |
+        |---|---|
+        | **ODO** | Officer of the Day |
+        | **FCF** | Functional Check Flight crew |
+        | **FLIGHT EVENT** | Scheduled for a flight today |
+        | **SIM EVENT** | Scheduled for simulator today |
+        | **SNIVED** | Submitted unavailability — should NOT be scheduled |
+        | **DOUBLE SCHEDULE** | Conflict: person is both SNIVED and on the flight schedule |
+        | **MED DOWN** | Medically grounded — cannot fly |
+        | **GRND EVENT** | Ground event only — no flight |
+
+        4. The **Flight Lines** section shows each mission: mission number, period (AM/PM/EVE),
+           brief time, event type (CAL/FAM/FCF), aircraft tail number, IP, and student
+
+        **Tip:** CAL = Calibration flight, FAM = Familiarisation flight, FCF = Functional Check Flight
+        """)
+
+    with st.expander("🎓  Ground School Tab"):
+        st.markdown("""
+        **What it shows:**
+        The daily ground school calendar — equivalent to the Excel-generated ground school spreadsheet.
+
+        **How to use it:**
+        1. Select a date from the dropdown
+        2. Each event card shows: event code, title, start time, and duration
+        3. Look for these badges:
+           - **CSI REQUIRED** 🔬 — A Certified Simulator Instructor must be present for this event.
+             If no CSI is available that day, the system will flag a warning in the Agent Query tab
+           - **OUTSIDE AGENCY** 🏢 — This event involves an external organisation (e.g. Aeromed,
+             Night Lab, Course Rules brief) and requires advance coordination
+
+        **Tip:** Use the Agent Query tab with `check CSI availability for 2026-04-07` to
+        automatically verify whether a qualified CSI is available before the duty day.
+        """)
+
+    with st.expander("📋  IP Hotboard Tab"):
+        st.markdown("""
+        **What it shows:**
+        Instructors ranked from least to most Year-to-Date flight hours — this determines who
+        should fly next. Replaces the broken IP Hotboard Product tab in the Excel spreadsheet.
+
+        **How to use it:**
+        1. Select a date from the dropdown
+        2. **Available** instructors are ranked #1 (least hours) to last — the scheduler should
+           assign the top-ranked available IP to the next flight
+        3. **Unavailable** instructors are listed separately with their reason (SNIVED or MED DOWN)
+        4. Instructor type is shown in brackets:
+           - **ACTIVE** — Full-time staff instructor
+           - **AF** — Air Force exchange instructor
+           - **RESERVIST** — Part-time; only available on their drill days
+           - **NON_PERM** — Non-permanent attached pilot
+
+        **Tip:** Use the Agent Query tab with `show qualified IPs for CAL on 2026-04-06` to
+        filter the hotboard to only instructors qualified for a specific event type.
+        """)
+
+    with st.expander("🚫  SNIVs Tab"):
+        st.markdown("""
+        **What it shows:**
+        Unavailability requests (SNIVs) for a selected date, plus a full personnel availability
+        summary. Replaces the manual copy-paste from MSharp into the Personnel Availability
+        and SNIV tabs on the Weekly spreadsheet.
+
+        **What is a SNIV?**
+        A SNIV is a request by a person to **not be scheduled** on a given date. It is submitted
+        in the scheduling system (MSharp) or entered manually. A person who is SNIVED should
+        not appear on the flight schedule.
+
+        **How to use it:**
+        1. Select a date from the dropdown
+        2. **SNIVs section** — lists everyone who has requested unavailability and why
+        3. **Personnel Availability Summary** — shows every instructor and student with their status:
+           - 🟢 **AVAILABLE** — cleared to be scheduled
+           - 🔴 **UNAVAILABLE** — SNIVED, medically grounded, or (for reservists) not a drill day
+
+        **Tip:** Use the Agent Query tab with
+        `check for double schedule conflicts on 2026-04-06` to automatically detect anyone
+        who is SNIVED but still appears on the flight schedule.
+        """)
+
+    with st.expander("👷‍✈️  Students Tab"):
+        st.markdown("""
+        **What it shows:**
+        All students grouped by class, sorted from most days behind to on track.
+
+        **Status indicators:**
+        - 🔴 **BEHIND** — more than 3 workdays behind schedule
+        - 🟡 **BEHIND** — 1–3 workdays behind schedule
+        - 🟢 **ON TRACK** — no days behind
+
+        **Student priority tiers** (relevant for flight scheduling priority):
+        - **AF** — Air Force exchange student with a fixed departure deadline — highest priority
+        - **REFRESH** — Refresher pilot returning to currency — high priority
+        - **STANDARD** — Normal syllabus student
+        """)
+
+    with st.expander("📋  Notifications Tab"):
+        st.markdown("""
+        **What it shows:**
+        A log of all instructor alerts sent during this session.
+
+        Alerts are only sent after you explicitly **approve** them in the Agent Query tab.
+        Each alert includes: instructor name, student name, class, alert type, timestamp, and message.
+
+        **Alert types:**
+        - **HIGH_RISK** — Student is at high risk of not completing training on time
+        - **BEHIND_SCHEDULE** — Student is behind their syllabus schedule
+        - **REMEDIATION_ASSIGNED** — A remediation plan has been created for the student
+        - **ON_TRACK** — Positive status update
+        """)
+
+    st.divider()
+    st.markdown("### Available Demo Data")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("**Classes:** 26-1, 26-2")
+        st.markdown("**Students:** Tara Voss, Leon Marsh, Dana Quirke (class 26-1)")
+        st.markdown("**Students:** Bram Okafor, Yuki Tanaka, Petra Holst (class 26-2)")
+        st.markdown("**Instructors:** Gale Rynder, Otto Finch, Selma Varga, Noel Drax, Preet Aulakh, Bex Torrance")
+    with col2:
+        st.markdown("**Flight/Schedule dates:** 2026-04-06, 2026-04-07, 2026-04-08, 2026-04-13, 2026-04-20, 2026-04-27")
+        st.markdown("**SNIVed on 2026-04-06:** Otto Finch (personal), Preet Aulakh (medical)")
+        st.markdown("**Aircraft:** T-001 (CAL/FMC), T-002 (FAM/FMC), T-003 (CAL/FMC), T-004 (FAM/PMC), T-005 (CAL/NMC)")
+        st.markdown("**Priority students:** Dana Quirke (AF/26-1), Bram Okafor (AF/26-2)")
+with tab8:
+    st.title("How to Use This System")
+    st.markdown("This system replaces multiple Excel spreadsheets and SharePoint trackers with a single AI-powered interface for aviation flight training scheduling and student management.")
+
+    with st.expander("Agent Query — Ask the AI anything", expanded=True):
+        st.markdown("""**What it does:** Type a plain-English question and the system routes it to the right specialist agents.\n\n**How to use it:**\n- Type your question and click Run, or click an example button\n- The system shows which agents were called and what each found\n- If the query involves sending an instructor alert, you must Approve or Reject before anything is sent\n\n**Tip:** Always include a date in YYYY-MM-DD format for flight/schedule queries. Available demo dates: 2026-04-06, 2026-04-07, 2026-04-08, 2026-04-13, 2026-04-20, 2026-04-27""")
+
+    with st.expander("Flight Schedule Tab"):
+        st.markdown("""**What it shows:** The daily operational picture equivalent to the Weekly spreadsheet whiteboard.\n\n**How to use it:**\n1. Select a date from the dropdown\n2. The Environmental Data bar shows Sunset, EENT (End of Evening Nautical Twilight), HLL (High Light Level), Highlight Window, and Flight Window\n3. The Daily Status Board shows every person colour-coded by status:\n   - ODO: Officer of the Day\n   - FCF: Functional Check Flight crew\n   - FLIGHT EVENT: Scheduled for a flight today\n   - SIM EVENT: Scheduled for simulator today\n   - SNIVED: Submitted unavailability - should NOT be scheduled\n   - DOUBLE SCHEDULE: Conflict - person is SNIVED but still on the flight schedule\n   - MED DOWN: Medically grounded - cannot fly\n   - GRND EVENT: Ground event only\n4. Flight Lines section shows each mission: MSN number, period (AM/PM/EVE), brief time, event type (CAL/FAM/FCF), aircraft tail, IP, and student\n\n**Tip:** CAL = Calibration flight, FAM = Familiarisation flight, FCF = Functional Check Flight""")
+
+    with st.expander("Ground School Tab"):
+        st.markdown("""**What it shows:** The daily ground school calendar equivalent to the Excel-generated ground school spreadsheet.\n\n**How to use it:**\n1. Select a date from the dropdown\n2. Each event card shows: event code, title, start time, and duration\n3. Look for these badges:\n   - CSI REQUIRED: A Certified Simulator Instructor must be present. If no CSI is available the system will flag a warning in the Agent Query tab\n   - OUTSIDE AGENCY: This event involves an external organisation (Aeromed, Night Lab, Course Rules brief) and requires advance coordination\n\n**Tip:** Use the Agent Query tab with: Show me the ground school schedule and CSI availability for 2026-04-07""")
+
+    with st.expander("IP Hotboard Tab"):
+        st.markdown("""**What it shows:** Instructors ranked from least to most Year-to-Date flight hours. This determines who should fly next. Replaces the broken IP Hotboard Product tab in the Excel spreadsheet.\n\n**How to use it:**\n1. Select a date from the dropdown\n2. Available instructors are ranked #1 (least hours) to last - assign the top-ranked available IP to the next flight\n3. Unavailable instructors are listed separately with their reason (SNIVED or MED DOWN)\n4. Instructor types:\n   - ACTIVE: Full-time staff instructor\n   - AF: Air Force exchange instructor\n   - RESERVIST: Part-time, only available on their drill days\n   - NON_PERM: Non-permanent attached pilot\n\n**Tip:** Use Agent Query with: Show qualified IPs for CAL on 2026-04-06 to filter by event type qualification""")
+
+    with st.expander("SNIVs Tab"):
+        st.markdown("""**What it shows:** Unavailability requests for a selected date plus a full personnel availability summary. Replaces the manual copy-paste from the scheduling system into the Personnel Availability and SNIV tabs on the Weekly spreadsheet.\n\n**What is a SNIV?**\nA SNIV is a request by a person to NOT be scheduled on a given date. A person who is SNIVED should not appear on the flight schedule.\n\n**How to use it:**\n1. Select a date from the dropdown\n2. SNIVs section lists everyone who has requested unavailability and why\n3. Personnel Availability Summary shows every instructor and student with status:\n   - Green AVAILABLE: cleared to be scheduled\n   - Red UNAVAILABLE: SNIVED, medically grounded, or for reservists not a drill day\n\n**Tip:** Use Agent Query with: Check for double schedule conflicts on 2026-04-06 to detect anyone SNIVED but still on the flight schedule""")
+
+    with st.expander("Students Tab"):
+        st.markdown("""**What it shows:** All students grouped by class, sorted from most days behind to on track.\n\n**Status indicators:**\n- Red BEHIND: more than 3 workdays behind schedule\n- Yellow BEHIND: 1-3 workdays behind schedule\n- Green ON TRACK: no days behind\n\n**Student priority tiers:**\n- AF: Air Force exchange student with a fixed departure deadline - highest scheduling priority\n- REFRESH: Refresher pilot returning to currency - high priority\n- STANDARD: Normal syllabus student""")
+
+    with st.expander("Notifications Tab"):
+        st.markdown("""**What it shows:** A log of all instructor alerts sent during this session. Alerts are only sent after you explicitly Approve them in the Agent Query tab.\n\n**Alert types:**\n- HIGH_RISK: Student is at high risk of not completing training on time\n- BEHIND_SCHEDULE: Student is behind their syllabus schedule\n- REMEDIATION_ASSIGNED: A remediation plan has been created\n- ON_TRACK: Positive status update""")
+
+    st.divider()
+    st.markdown("### Available Demo Data")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("**Classes:** 26-1, 26-2")
+        st.markdown("**Class 26-1 students:** Tara Voss, Leon Marsh, Dana Quirke")
+        st.markdown("**Class 26-2 students:** Bram Okafor, Yuki Tanaka, Petra Holst")
+        st.markdown("**Instructors:** Gale Rynder, Otto Finch, Selma Varga, Noel Drax, Preet Aulakh, Bex Torrance")
+    with col2:
+        st.markdown("**Schedule dates:** 2026-04-06, 2026-04-07, 2026-04-08, 2026-04-13, 2026-04-20, 2026-04-27")
+        st.markdown("**SNIVed on 2026-04-06:** Otto Finch (personal), Preet Aulakh (medical)")
+        st.markdown("**Aircraft:** T-001 CAL/FMC, T-002 FAM/FMC, T-003 CAL/FMC, T-004 FAM/PMC, T-005 CAL/NMC")
+        st.markdown("**Priority students:** Dana Quirke (AF/26-1), Bram Okafor (AF/26-2)")
