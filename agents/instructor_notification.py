@@ -3,14 +3,14 @@ from data.mock_data import MOCK_STUDENT_HISTORY
 
 # Mock instructor registry
 MOCK_INSTRUCTORS = {
-    '25-4': {
-        'name': 'Instructor Williams',
-        'email': 'williams@aviation-training.com',
+    '26-1': {
+        'name': 'Instructor Rynder',
+        'email': 'g.rynder@aviationtraining.aero',
         'phone': '555-0101'
     },
-    '25-5': {
-        'name': 'Instructor Chen',
-        'email': 'chen@aviation-training.com',
+    '26-2': {
+        'name': 'Instructor Varga',
+        'email': 's.varga@aviationtraining.aero',
         'phone': '555-0202'
     }
 }

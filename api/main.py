@@ -225,4 +225,4 @@ def list_notifications():
 @app.get("/health", tags=["System"])
 def health():
     """Health check endpoint."""
-    return {"status": "ok", "agents": 5, "classes": 2}
+    return {"status": "ok", "agents": 9, "classes": 2}
